@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Game Navigation</title>
+	<link rel="stylesheet" href="static/layout.css">
+</head>
+<body>
+
+	{% extends "layout.html" %}
+ 
+    {% block body %}
+    
+	
+	<!-- Layered display of games of different catagorys -->
+	<h1>Horror Games</h1>
+	<div class="flex-container">
+        <div class="flex-item">
+            <a href="game/1">
+                <img src="static/Default.jpeg" alt="Placeholder">
+              
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/2">
+                <img src="static/Default.jpeg" alt="Placeholder">
+               
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/3">
+                <img src="static/Default.jpeg" alt="Placeholder">
+               
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/4">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/5">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/6">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+    </div>
+	<h1>Survival Games</h1>
+	<div class="flex-container">
+        <div class="flex-item">
+            <a href="game/1">
+                <img src="static/Default.jpeg" alt="Placeholder">
+              
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/2">
+                <img src="static/Default.jpeg" alt="Placeholder">
+               
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/3">
+                <img src="static/Default.jpeg" alt="Placeholder">
+               
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/4">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/5">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/6">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+    </div>
+	<h1>Adventure Games</h1>
+	<div class="flex-container">
+        <div class="flex-item">
+            <a href="game/1">
+                <img src="static/Default.jpeg" alt="Placeholder">
+              
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/2">
+                <img src="static/Default.jpeg" alt="Placeholder">
+               
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/3">
+                <img src="static/Default.jpeg" alt="Placeholder">
+               
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/4">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/5">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+        <div class="flex-item">
+            <a href="game/6">
+                <img src="static/Default.jpeg" alt="Placeholder">
+                
+            </a>
+        </div>
+    </div>
+	
+	{% endblock %}
+</body>
+
+	<script>
+		const menuIcon = document.querySelector('.menu-icon');
+		const navbar = document.querySelector('.navbar');
+	
+		menuIcon.addEventListener('click', () => {
+			navbar.classList.toggle('active');
+		});
+	</script>
+
+</html>
+    

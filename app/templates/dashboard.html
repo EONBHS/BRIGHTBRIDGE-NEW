@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="static/layout.css">
+        <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        {% extends "layout.html" %}
+ 
+        {% block body %}
+        {% if session.logged_in %}
+          <!-- center column for dashboard -->
+            <div class="center_dashboard">
+            
+                <div class="card">
+                    <h2>Add Game</h2>
+                    <a href="/addgame">Add Game</a>
+                </div>
+                <div class="card">
+                    <h2>My Jams</h2>
+                    <p>Here you can see your jams and your profile.</p>
+                    <a href="/jam/addjam">Create a new jam</a>
+                </div>
+                <div class="card">
+                <h2>My Profile</h2>
+                <p>Here you can see your jams and your profile.</p>
+                </div>
+            </div>
+        {% else %}
+            <p>You are not logged in</p>
+        {% endif %}
+                
+
+                <script>
+                    const menuIcon = document.querySelector('.menu-icon');
+                    const navbar = document.querySelector('.navbar');
+                    menuIcon.addEventListener('click', () => {
+                        navbar.classList.toggle('active');
+                    });
+                </script>
+        {% endblock %}
+    </body>
+</html>

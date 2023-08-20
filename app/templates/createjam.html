@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <body>
+        {% extends "layout.html" %}
+        {% block body %}
+        {% if session.logged_in %}
+        <div class="card">
+            <h1>Create Jam</h1>
+            <p>Create a new jam</p>
+            <form action="/createjam" method="post" enctype="multipart/form-data">
+                <input type="text" id="JamName" name="JamName" required>
+                <input type="text" id="JamDescription" name="JamDescription" required>
+                <input type="date" id="JamStartDate" name="JamStartDate" required>
+                <input type="date" id="JamEndDate" name="JamEndDate" required>
+                <input type="file" id="JamImage" name="JamImage" accept=".jpeg,.png,.jpg">
+                <input type="submit" value="Create">
+            </form>
+        </div>
+        {% else %}
+        <p>You are not logged in</p>
+        {% endif %}
+        {% endblock %}
+    </body>
+</html>
