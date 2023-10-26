@@ -10,23 +10,28 @@
  
     {% block body %}
     <h1>Jams</h1>
-    <a href="jam/addjam">Create a new jam</a>
+    <div class="gamecard">
+    <a  href="jam/addjam">Create a new jam</a>
+    <h2>Current Jams</h2>
+    <p>Here you can find all the jams that are currently running.</p>
+    <p>Click on a jam to see more details.</p>
+    </div>
 
     <br>
 
-    <p>Here you can find all the jams that are currently running.</p>
-    <p>Click on a jam to see more details.</p>
+    
     <ul>
-        {% for jam in jams %}
+        
         <div class="flex-container">
+            {% for jam in jams %}
             <div class="flex-item">
                 <a href="jam/{{ jam.id }}">
                     <img src="static/jams/{{jam.image}}" alt="Placeholder">
                 </a>
             </div>
-        
+            {% endfor %}
         </div>
-        {% endfor %}
+        
     </ul>
     
     

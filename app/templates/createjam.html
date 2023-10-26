@@ -5,14 +5,19 @@
         {% extends "layout.html" %}
         {% block body %}
         {% if session.logged_in %}
-        <div class="card">
+        <div class="gamecard">
             <h1>Create Jam</h1>
             <p>Create a new jam</p>
             <form action="/createjam" method="post" enctype="multipart/form-data">
+                <h3> Name </h3>
                 <input type="text" id="JamName" name="JamName" required>
+                <h3> Description </h3>
                 <input type="text" id="JamDescription" name="JamDescription" required>
+                <h3> Start Date </h3>
                 <input type="date" id="JamStartDate" name="JamStartDate" required>
+                <h3> End Date </h3>
                 <input type="date" id="JamEndDate" name="JamEndDate" required>
+                <h3> Upload a thumbnail </h3>
                 <input type="file" id="JamImage" name="JamImage" accept=".jpeg,.png,.jpg">
                 <input type="submit" value="Create">
             </form>

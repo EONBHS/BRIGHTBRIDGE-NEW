@@ -1,8 +1,27 @@
-from flask import render_template, redirect, request, abort, session
-from flask_cors import CORS
+from flask import render_template, redirect, request, abort, session, make_response, Response
+from flask_cors import CORS, cross_origin
 from app import app, db
 from app.models import User, Games, Jams, GameJamGames
 from werkzeug.utils import secure_filename
+from sqlalchemy import desc, asc, func, and_, or_, not_
+from datetime import datetime
+import os
+import json
+import requests
+import random
+import string
+import hashlib
+# http
+import requests
+import json
+import urllib.parse
+import urllib.request
+import urllib.error
+
+
+
+
+
 
 # GOOGLE AUTH
 from google_auth_oauthlib import flow
@@ -16,6 +35,8 @@ import requests
 import cachecontrol
 
 cors = CORS(app)
+
+
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
@@ -80,15 +101,17 @@ def callback():
     session['email'] = id_info['email']
     session['picture'] = id_info['picture']
 
-    # add user to database
-    new_user = User(google_ID=session['google_id'], name=session['name'],
-                    email=session['email'], Profilepicture=session['picture'])
-    db.session.add(new_user)
-    db.session.commit()
-
-    #Logged in session
-    session['logged_in'] = True
-
+    # If user already exists in database
+    if User.query.filter_by(google_ID=session['google_id']).first():
+        session['logged_in'] = True
+        print("User already exists")
+        return redirect('/')
+    else:
+        new_user = User(google_ID=session['google_id'], name=session['name'],
+                        email=session['email'], Profilepicture=session['picture'])
+        db.session.add(new_user)
+        db.session.commit()
+        session['logged_in'] = True
     return redirect('/')
 
 
@@ -146,8 +169,6 @@ def zip():
         jam_id= request.form.get('jam_id')
         genre = request.form.get('genre')
         splashscreen = request.files.get('splashscreen')
-        image_1 = request.files.get('image1')
-        image_2 = request.files.get('image2')
         file = request.files.get('zipfile')
 
         filename = secure_filename(file.filename)
@@ -163,33 +184,37 @@ def zip():
             splash = secure_filename(splashscreen.filename)
             splashscreen.save(os.path.join(dirpath, splash))
 
-            image1 = secure_filename(image_1.filename)
-            image_1.save(os.path.join(dirpath, image1))
-
-            image2 = secure_filename(image_2.filename)
-            image_2.save(os.path.join(dirpath, image2))
-
-            new_game = Games(name=name, description=description, downloadable=downloadable, genre=genre,User_ID=session['google_id'], splashscreen=splash, image1=image1, image2=image2, filename=filename, dirname=dirname, dirpath=dirpath,jam_id=jam_id)
+            new_game = Games(name=name, description=description, downloadable=downloadable, genre=genre,User_ID=session['google_id'], splashscreen=splash, filename=filename, dirname=dirname, dirpath=dirpath,jam_id=jam_id)
             db.session.add(new_game)
             db.session.commit()
+
+            jam_id = 1
+            if jam_id != 0:
+                GameID = Games.query.filter(Games.name == name).first()
+                new_jamgame = GameJamGames(jam_id=jam_id, game_id=GameID.id,splashscreen=splash)
+                db.session.add(new_jamgame)
+                db.session.commit()
+            else:
+                pass
+            with zipfile.ZipFile(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r') as zip_ref:
+                zip_ref.extractall(dirpath)
+            return redirect("/dashboard")
+        
 
             
         # JAM ID IS NOT BEING DEFINED! JAM ID IS EQUAL TO NOTHING!
         # GAMEID.ID IS ALSO NOT BEING DEFINED
-        jam_id = 1
-        if jam_id > 0:
-            GameID = Games.query.filter(Games.name == name).first()
-            new_jamgame = GameJamGames(jam_id=jam_id, game_id=GameID)
-            db.session.add(new_jamgame)
-            db.session.commit()
+      
         # extract contents of the zip file to the new directory
-        with zipfile.ZipFile(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r') as zip_ref:
-            zip_ref.extractall(dirpath)
-        return redirect("/dashboard")
+       
 
 
-@app.route('/<int:id>', methods=["GET", "POST"])
+@app.route('/<int:id>', methods=["GET", "POST"] )
+@cross_origin(origin='http://localhost:5000',headers=['Content- Type','Authorization'])
 def game(id):
+    # Response = make_response(render_template('game.html', game=game))
+    # Response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'
+    # Response.headers['Cross-Origin-Embedder-Policy'] = 'require-corp'
     """Displays a specific game based on its ID."""
     game = Games.query.get(id)
     return render_template('game.html', game=game)
@@ -222,8 +247,9 @@ def create_jams():
 @app.route('/jam/<int:id>', methods=["GET", "POST"])
 def jam(id):
     # Display a jam
-    jam = Jams.query.get(id)
-    return render_template('jam.html', jam=jam)
+    jams = Jams.query.get(id)
+    jamgames = GameJamGames.query.filter_by(jam_id = id).all()
+    return render_template('jam.html', jam=jams, jamgames=jamgames)
 
         
 @app.route('/jams', methods=["GET", "POST"])
@@ -231,6 +257,15 @@ def display_jams():
     # Display all jams
     jams = Jams.query.all()
     return render_template('jams.html', jams=jams)
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    """Handles game search requests."""
+    if request.method == 'POST':
+        search = request.form.get('search')
+        games = Games.query.filter(Games.name.contains(search)).all()
+        return render_template('search.html', games=games, search=search)
+    return render_template('index.html')
 
 @app.errorhandler(404)
 def page_not_found(e):

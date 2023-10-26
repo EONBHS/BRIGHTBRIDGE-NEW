@@ -2,9 +2,26 @@
  
     {% block body %}
 
-<p> Cringe</p>
+    <!-- cross origin isolated -->
+    <meta http-equiv="Content-Security-Policy" content="require-corp">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PlayBurn</title>
+    
+<h1>{{game.name}}</h1>
 <div class="frame">
-    <h1>{{game.dirname}}</h1>
-    <iframe src="static/temp/{{game.dirname}}/index.html" width="1024" height="600"></iframe>
+    
+    <iframe src="static/temp/{{game.dirname}}/index.html" width="1024" height="600" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen allow="fullscreen" allowfullscreen="true" allow="fullscreen; cross-origin-isolated">
+        <!-- Url for index.js -->
+
+    </iframe>
+    <!-- index js -->
+    <script src="static/temp/{{game.dirname}}/index.js"></script>
+    <button title="Enter fullscreen" class="fullscreen_btn"></button>
 </div>
+
+<div class="description">
+    <h2>Description</h2>
+    <p>{{game.description}}</p>
+</div>
+
 {% endblock %}

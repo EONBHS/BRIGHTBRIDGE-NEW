@@ -23,13 +23,14 @@
         {% endfor %}
     </div>
 	<h1>Adventure Games</h1>
-	<div class="flex-container">
         {% for adventure in adventures %}
-        <div class="flex-item">
+        <div class="flex-container">
+            <div class="flex-item">
             <a href="{{adventure.id}}">
                 <img src="static/temp/{{adventure.dirname}}/{{adventure.splashscreen}}" alt="Placeholder">
               
             </a>
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -48,7 +49,7 @@
     <div class="flex-container">
         {% for strategy in strategys %}
         <div class="flex-item">
-            <a href="{{game.id}}">
+            <a href="{{strategy .id}}">
                 <img src="static/temp/{{strategy.dirname}}/{{strategy.splashscreen}}" alt="Placeholder">
               
             </a>
@@ -111,6 +112,7 @@
         {% endfor %}
     </div>
     <h1>Platformer Games</h1>
+    
     <div class="flex-container">
         {% for platformer in platformers %}
         <div class="flex-item">
@@ -132,17 +134,9 @@
         </div>
         {% endfor %}
     </div>
-	{% endblock %}
+	
 </body>
 
-	<script>
-		const menuIcon = document.querySelector('.menu-icon');
-		const navbar = document.querySelector('.navbar');
-	
-		menuIcon.addEventListener('click', () => {
-			navbar.classList.toggle('active');
-		});
-	</script>
-
+{% endblock %}
 </html>
     

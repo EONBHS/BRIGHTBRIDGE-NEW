@@ -1,10 +1,19 @@
 from flask import Flask
 from app import db
 
-GameJamGames = db.Table('GameJamGames',
-    db.Column("game_id",db.Integer, db.ForeignKey('games.id'), primary_key=True),
-    db.Column("jam_id", db.Integer, db.ForeignKey('jams.id'), primary_key=True)
-)
+class GameJamGames(db.Model):
+    """The GameJamGames Class contains information on the games that are in a game jam."""
+    __tablename__ = 'GameJamGames'
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
+    jam_id = db.Column(db.Integer, db.ForeignKey('jams.id'), primary_key=True)
+    splashscreen = db.Column(db.String)
+    dirname = db.Column(db.String)
+    game = db.relationship("Games", backref="GameJamGames")
+    jam = db.relationship("Jams", backref="GameJamGames")
+
+    def __repr__(self):
+        return '<GameJamGames %r>' % self.game_id
+
 
 class User(db.Model): 
     """The User Class, contains information on the user supplied by their google account when they login."""
@@ -26,8 +35,6 @@ class Games(db.Model):
     dirname = db.Column(db.String)
     dirpath = db.Column(db.String)
     splashscreen = db.Column(db.String)
-    image1 = db.Column(db.String)
-    image2 = db.Column(db.String)
     user = db.relationship("User",
     backref="Game") 
     jam_id = db.Column(db.Integer, db.ForeignKey("jams.id"))

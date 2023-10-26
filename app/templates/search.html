@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    {% extends "layout.html" %}
+        
+        {% block body %}
+        <h1> Results from "{{ search }}" </h1>
+      
+      
+
+        {% for game in games%}
+        {% if games|length == 0 %}
+        <h2> No results found :( </h2>
+        {% endif %}
+        <div class="flex-item">
+            <a href="{{game.id}}">
+                <!-- <img src="static/Default.jpeg" alt="Placeholder"> -->
+                <img src="static/temp/{{game.dirname}}/{{game.splashscreen}}" alt="Placeholder">
+              
+            </a>
+        </div>
+        {% endfor %}
+     {% endblock %}
+</body>
+</html>

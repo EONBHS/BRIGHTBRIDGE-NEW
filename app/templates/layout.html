@@ -16,7 +16,9 @@
                 <div class="dropdown">
                     <a href="/jams">Jams</a>
                 </div>
-                <input class="search" type="text" placeholder="Search.." >
+                <form action="/search" method="post">
+                    <input class="search" type="text" placeholder="Search.." name="search">
+                </form>
                 {% if session.logged_in %}
                 <a href="/logout">Logout</a>
                 {% else %}
@@ -30,9 +32,7 @@
 
           {% endblock %}
 
-          <div class="footer">
-            <p>&copy; 2023 My Company. All Rights Reserved.</p>
-            </div>
+          
 
 
           <script>
@@ -44,5 +44,8 @@
             });
         </script>
     </body>
+    <footer>
+        <p>&copy; 2023 My Company. All Rights Reserved.</p>
+    </footer>
     
 </html>

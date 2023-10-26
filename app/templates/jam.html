@@ -6,14 +6,25 @@
 <body>
     {% extends "layout.html" %}
       
-     {% block body %}
+    {% block body %}
         {% if session.logged_in %}
-        <h1>Hi</h1>
+        <div class="flex-container">
+            {% for jam in jamgames%}
+            <div class="flex-item">
+                <a href="{{url_for('game', id=jam.game_id)}}">
+                    <!-- <img src="static/Default.jpeg" alt="Placeholder"> -->
+                    <img src="static/temp/{{jam.dirname}}/{{jam.splashscreen}}" alt="Placeholder">
+                  
+                </a>
+            </div>
+          
+            {% endfor %}
+        </div>
         {% else %}
         <p>You are not logged in</p>
         {% endif %}
 
 
-     {% endblock %}
+    {% endblock %}
 </body>
 </html>
